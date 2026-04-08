@@ -1,53 +1,67 @@
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
+import java.util.stream.Collectors;
+
+class Bogie {
+    String name;
+    int capacity;
+
+    Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
+}
 
 public class TrainConsistApp {
 
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+        System.out.println("=== Performance Comparison: Loop vs Stream ===");
 
-        System.out.println("=== Train Consist Management App ===");
-
-        // Input
-        System.out.print("Enter Train ID: ");
-        String trainId = sc.nextLine();
-
-        System.out.print("Enter Cargo Code: ");
-        String cargoCode = sc.nextLine();
-
-        // 🔥 Regex Patterns
-        String trainPatternStr = "TRN-\\d{4}";
-        String cargoPatternStr = "PET-[A-Z]{2}";
-
-        // Compile patterns
-        Pattern trainPattern = Pattern.compile(trainPatternStr);
-        Pattern cargoPattern = Pattern.compile(cargoPatternStr);
-
-        // Matchers
-        Matcher trainMatcher = trainPattern.matcher(trainId);
-        Matcher cargoMatcher = cargoPattern.matcher(cargoCode);
-
-        // Validation
-        boolean isTrainValid = trainMatcher.matches();
-        boolean isCargoValid = cargoMatcher.matches();
-
-        // Output
-        System.out.println("\nValidation Results:");
-
-        if (isTrainValid) {
-            System.out.println("Train ID is VALID ✅");
-        } else {
-            System.out.println("Train ID is INVALID ❌");
+        // 🔥 Create large dataset
+        List<Bogie> bogies = new ArrayList<>();
+        for (int i = 0; i < 100000; i++) {
+            bogies.add(new Bogie("Bogie-" + i, (int)(Math.random() * 100)));
         }
 
-        if (isCargoValid) {
-            System.out.println("Cargo Code is VALID ✅");
-        } else {
-            System.out.println("Cargo Code is INVALID ❌");
+        // =========================
+        // 🔹 Loop-based filtering
+        // =========================
+        long startLoop = System.nanoTime();
+
+        List<Bogie> loopResult = new ArrayList<>();
+        for (Bogie b : bogies) {
+            if (b.capacity > 60) {
+                loopResult.add(b);
+            }
         }
 
-        System.out.println("\nSystem ready for secure processing.");
+        long endLoop = System.nanoTime();
+        long loopTime = endLoop - startLoop;
+
+        // =========================
+        // 🔹 Stream-based filtering
+        // =========================
+        long startStream = System.nanoTime();
+
+        List<Bogie> streamResult = bogies.stream()
+                .filter(b -> b.capacity > 60)
+                .collect(Collectors.toList());
+
+        long endStream = System.nanoTime();
+        long streamTime = endStream - startStream;
+
+        // =========================
+        // 🔹 Results
+        // =========================
+        System.out.println("\nLoop Result Size: " + loopResult.size());
+        System.out.println("Stream Result Size: " + streamResult.size());
+
+        System.out.println("\nLoop Execution Time (ns): " + loopTime);
+        System.out.println("Stream Execution Time (ns): " + streamTime);
+
+        // Consistency check
+        System.out.println("\nResults Match: " + (loopResult.size() == streamResult.size()));
+
+        System.out.println("\nPerformance comparison complete.");
     }
 }
