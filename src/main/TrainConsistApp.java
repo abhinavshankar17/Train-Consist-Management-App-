@@ -1,49 +1,32 @@
 import java.util.*;
 
-// Custom Runtime Exception
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
+public class TrainConsistApp {
 
-// Goods Bogie
-class GoodsBogie {
-    String shape;
-    String cargo;
-
-    GoodsBogie(String shape) {
-        this.shape = shape;
-    }
-
-    public void assignCargo(String cargo) {
-        try {
-            if (shape.equals("Rectangular") && cargo.equals("Petroleum")) {
-                throw new CargoSafetyException("Unsafe: Petroleum cannot be assigned to Rectangular bogie");
+    public static void bubbleSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            boolean swapped = false;
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    // swap
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    swapped = true;
+                }
             }
-            this.cargo = cargo;
-            System.out.println("Cargo assigned: " + cargo + " to " + shape);
-        } catch (CargoSafetyException e) {
-            System.out.println("Error: " + e.getMessage());
-        } finally {
-            System.out.println("Assignment attempt completed for " + shape);
+            if (!swapped) break;
         }
     }
 
-    public String getCargo() {
-        return cargo;
-    }
-}
-
-public class TrainConsistApp {
     public static void main(String[] args) {
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        GoodsBogie b1 = new GoodsBogie("Cylindrical");
-        GoodsBogie b2 = new GoodsBogie("Rectangular");
+        bubbleSort(capacities);
 
-        b1.assignCargo("Petroleum");   // valid
-        b2.assignCargo("Petroleum");   // invalid but handled
-
-        System.out.println("Program continues...");
+        System.out.println("Sorted Capacities:");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
     }
 }
