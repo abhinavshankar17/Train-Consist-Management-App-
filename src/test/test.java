@@ -5,13 +5,16 @@ import java.util.*;
 public class TrainConsistAppTest {
 
     @Test
-    void testMaxCapacity() {
-        List<Bogie> list = Arrays.asList(
-                new Bogie("Sleeper", 72),
-                new Bogie("AC", 50)
+    void testSafety() {
+        List<GoodsBogie> list = Arrays.asList(
+                new GoodsBogie("Cylindrical", "Petroleum"),
+                new GoodsBogie("Open", "Coal")
         );
 
-        Bogie max = list.stream().max(Comparator.comparingInt(b -> b.capacity)).get();
-        assertEquals("Sleeper", max.type);
+        boolean safe = list.stream().allMatch(b ->
+                !b.type.equals("Cylindrical") || b.cargo.equals("Petroleum")
+        );
+
+        assertTrue(safe);
     }
 }

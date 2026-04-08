@@ -1,23 +1,26 @@
 import java.util.*;
 
-class Bogie {
+class GoodsBogie {
     String type;
-    int capacity;
+    String cargo;
 
-    Bogie(String type, int capacity) {
+    GoodsBogie(String type, String cargo) {
         this.type = type;
-        this.capacity = capacity;
+        this.cargo = cargo;
     }
 }
 
 public class TrainConsistApp {
     public static void main(String[] args) {
-        List<Bogie> bogies = Arrays.asList(
-                new Bogie("Sleeper", 72),
-                new Bogie("AC", 50)
+        List<GoodsBogie> list = Arrays.asList(
+                new GoodsBogie("Cylindrical", "Petroleum"),
+                new GoodsBogie("Open", "Coal")
         );
 
-        Optional<Bogie> max = bogies.stream().max(Comparator.comparingInt(b -> b.capacity));
-        System.out.println(max.get().type);
+        boolean safe = list.stream().allMatch(b ->
+                !b.type.equals("Cylindrical") || b.cargo.equals("Petroleum")
+        );
+
+        System.out.println("Safe: " + safe);
     }
 }
