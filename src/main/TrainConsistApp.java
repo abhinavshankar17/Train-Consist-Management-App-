@@ -1,26 +1,31 @@
 import java.util.*;
+import java.util.stream.*;
 
-class GoodsBogie {
-    String type;
-    String cargo;
+class Bogie {
+    int capacity;
 
-    GoodsBogie(String type, String cargo) {
-        this.type = type;
-        this.cargo = cargo;
+    Bogie(int capacity) {
+        this.capacity = capacity;
     }
 }
 
 public class TrainConsistApp {
     public static void main(String[] args) {
-        List<GoodsBogie> list = Arrays.asList(
-                new GoodsBogie("Cylindrical", "Petroleum"),
-                new GoodsBogie("Open", "Coal")
-        );
 
-        boolean safe = list.stream().allMatch(b ->
-                !b.type.equals("Cylindrical") || b.cargo.equals("Petroleum")
-        );
+        List<Bogie> list = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) list.add(new Bogie(i));
 
-        System.out.println("Safe: " + safe);
+        long start = System.nanoTime();
+        List<Bogie> loopResult = new ArrayList<>();
+        for (Bogie b : list) if (b.capacity > 60) loopResult.add(b);
+        long end = System.nanoTime();
+        System.out.println("Loop Time: " + (end - start));
+
+        start = System.nanoTime();
+        List<Bogie> streamResult = list.stream()
+                .filter(b -> b.capacity > 60)
+                .collect(Collectors.toList());
+        end = System.nanoTime();
+        System.out.println("Stream Time: " + (end - start));
     }
 }
