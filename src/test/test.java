@@ -4,37 +4,32 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TrainConsistAppTest {
 
     @Test
-    void testSort_BasicAlphabeticalSorting() {
-        String[] arr = {"Sleeper","AC Chair","First Class","General","Luxury"};
-        TrainConsistApp.sortBogieNames(arr);
-        assertArrayEquals(new String[]{"AC Chair","First Class","General","Luxury","Sleeper"}, arr);
+    void testSearch_BogieFound() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        assertTrue(TrainConsistApp.searchBogieId(arr, "BG309"));
     }
 
     @Test
-    void testSort_UnsortedInput() {
-        String[] arr = {"Luxury","General","Sleeper","AC Chair"};
-        TrainConsistApp.sortBogieNames(arr);
-        assertArrayEquals(new String[]{"AC Chair","General","Luxury","Sleeper"}, arr);
+    void testSearch_BogieNotFound() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        assertFalse(TrainConsistApp.searchBogieId(arr, "BG999"));
     }
 
     @Test
-    void testSort_AlreadySortedArray() {
-        String[] arr = {"AC Chair","First Class","General"};
-        TrainConsistApp.sortBogieNames(arr);
-        assertArrayEquals(new String[]{"AC Chair","First Class","General"}, arr);
+    void testSearch_FirstElementMatch() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        assertTrue(TrainConsistApp.searchBogieId(arr, "BG101"));
     }
 
     @Test
-    void testSort_DuplicateBogieNames() {
-        String[] arr = {"Sleeper","AC Chair","Sleeper","General"};
-        TrainConsistApp.sortBogieNames(arr);
-        assertArrayEquals(new String[]{"AC Chair","General","Sleeper","Sleeper"}, arr);
+    void testSearch_LastElementMatch() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        assertTrue(TrainConsistApp.searchBogieId(arr, "BG550"));
     }
 
     @Test
-    void testSort_SingleElementArray() {
-        String[] arr = {"Sleeper"};
-        TrainConsistApp.sortBogieNames(arr);
-        assertArrayEquals(new String[]{"Sleeper"}, arr);
+    void testSearch_SingleElementArray() {
+        String[] arr = {"BG101"};
+        assertTrue(TrainConsistApp.searchBogieId(arr, "BG101"));
     }
 }
