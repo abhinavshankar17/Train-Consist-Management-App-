@@ -17,6 +17,7 @@ public class TrainConsistApp {
                 new Bogie("AC", 50)
         );
 
-        bogies.forEach(b -> System.out.println(b.type));
+        Optional<Bogie> max = bogies.stream().max(Comparator.comparingInt(b -> b.capacity));
+        System.out.println(max.get().type);
     }
 }
