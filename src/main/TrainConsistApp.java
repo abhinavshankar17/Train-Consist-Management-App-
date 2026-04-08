@@ -2,10 +2,23 @@ import java.util.*;
 
 public class TrainConsistApp {
 
-    public static boolean searchBogieId(String[] arr, String key) {
-        for (String id : arr) {
-            if (id.equals(key)) {
+    public static boolean binarySearchBogieId(String[] arr, String key) {
+        if (arr == null || arr.length == 0) return false;
+
+        Arrays.sort(arr); // ensure sorted
+
+        int low = 0, high = arr.length - 1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int cmp = key.compareTo(arr[mid]);
+
+            if (cmp == 0) {
                 return true;
+            } else if (cmp > 0) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
             }
         }
         return false;
@@ -13,10 +26,10 @@ public class TrainConsistApp {
 
     public static void main(String[] args) {
 
-        String[] bogieIds = {"BG101","BG205","BG309","BG412","BG550"};
-        String searchKey = "BG309";
+        String[] bogieIds = {"BG309","BG101","BG550","BG205","BG412"};
+        String searchKey = "BG205";
 
-        boolean found = searchBogieId(bogieIds, searchKey);
+        boolean found = binarySearchBogieId(bogieIds, searchKey);
 
         if (found) {
             System.out.println("Bogie ID found: " + searchKey);
